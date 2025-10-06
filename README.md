@@ -1,1 +1,1 @@
-## CHECK [SCALES README](https://github.com/eminjafarli/ScalesAPI) FOR MORE INFO‼️
+## CHECK [SCALES README](https://github.com/eminjafarli/Scales) FOR MORE INFO‼️
