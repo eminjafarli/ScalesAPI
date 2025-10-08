@@ -99,14 +99,6 @@ public class PurchaseController {
                 });
         purchase.setMenteqe(menteqe);
 
-        if (purchase.getLot() == null) {
-            Lot lot = new Lot();
-            lot = lotRepository.save(lot);
-            lot.setNumber(generateLot(menteqe, lot));
-            lotRepository.save(lot);
-            purchase.setLot(lot);
-        }
-
         Region region = regionRepository.findFirstByName(dto.getRegion().trim())
                 .orElseGet(() -> {
                     Region r = new Region();
@@ -114,6 +106,15 @@ public class PurchaseController {
                     return regionRepository.save(r);
                 });
         purchase.setRegion(region);
+
+        if (purchase.getLot() == null) {
+            Lot lot = new Lot();
+            lot = lotRepository.save(lot);
+            lot.setNumber(generateLot(menteqe, lot, region));
+            lotRepository.save(lot);
+            purchase.setLot(lot);
+        }
+
 
         Anbar anbar = anbarRepository.findFirstByName(dto.getAnbar().trim())
                 .orElseGet(() -> {
@@ -162,17 +163,6 @@ public class PurchaseController {
                     return menteqeRepository.save(newMenteqe);
                 });
 
-
-        Lot lot = new Lot();
-        lot.setNumber("TEMP");
-        lot = lotRepository.save(lot);
-
-        String lotNumber = generateLot(menteqe, lot);
-        lot.setNumber(lotNumber);
-        lotRepository.save(lot);
-
-        purchase.setLot(lot);
-
         String regionName = dto.getRegion().trim();
         Region region = regionRepository.findFirstByName(regionName)
                 .orElseGet(() -> {
@@ -180,6 +170,16 @@ public class PurchaseController {
                     newRegion.setName(regionName);
                     return regionRepository.save(newRegion);
                 });
+
+        Lot lot = new Lot();
+        lot.setNumber("TEMP");
+        lot = lotRepository.save(lot);
+        String lotNumber = generateLot(menteqe, lot, region);
+        lot.setNumber(lotNumber);
+        lotRepository.save(lot);
+
+        purchase.setLot(lot);
+
 
         String anbarName = dto.getAnbar().trim();
         Anbar anbar = anbarRepository.findFirstByName(anbarName)
@@ -217,9 +217,12 @@ public class PurchaseController {
         return purchaseRepository.save(purchase);
     }
 
-    private String generateLot(Menteqe menteqe, Lot lot) {
+    private String generateLot(Menteqe menteqe, Lot lot, Region region) {
         String prefix = "FA-";
-        String code = switch (menteqe.getId().intValue()) {
+        if (region.getName()!= null && region.getName().trim().equalsIgnoreCase("QS")) {
+            prefix = "QS-";
+        }
+    String code = switch (menteqe.getId().intValue()) {
             case 3 -> "DZ";
             case 69 -> "LZ";
             case 70 -> "OZ";
