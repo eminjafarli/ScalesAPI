@@ -222,6 +222,9 @@ public class PurchaseController {
         if (region.getName()!= null && region.getName().trim().equalsIgnoreCase("QS")) {
             prefix = "QS-";
         }
+        if (region.getName()!= null && region.getName().trim().equalsIgnoreCase("LA")) {
+            prefix = "LA-";
+        }
     String code = switch (menteqe.getId().intValue()) {
             case 3 -> "DZ";
             case 69 -> "LZ";

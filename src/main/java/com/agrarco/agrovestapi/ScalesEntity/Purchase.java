@@ -1,5 +1,6 @@
 package com.agrarco.agrovestapi.ScalesEntity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,8 +37,9 @@ public class Purchase {
     private double bosCeki;
     private double netCeki;
     private String qeyd;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime doluTarix;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime bosTarix;
 
     @ManyToOne
